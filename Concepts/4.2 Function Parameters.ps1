@@ -5,10 +5,16 @@ Function Parameters
     - They are very useful and are the 'backend' operators for functions
 #>
 
-function greet {
-    param (
-        $i
-    )
+function greet($lang) {
+    if ($lang -eq 'es') {
+        "Hola!"
+    }
+    elseif ($lang -eq 'fr') {
+        "Bonjour!"
+    }
+    else {
+        "Hello!"
+    }
 }
 
-# Incomplete!
+greet -lang "fr"
