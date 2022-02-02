@@ -8,7 +8,7 @@ Collatz Conjecture
 #>
 
 $prompt = read-host -prompt "Please input a number"
-$number = [int]$prompt
+$number = $prompt
 $count = 0 
 
 "The original number is " + $number + "."
@@ -20,14 +20,14 @@ while ($true) {
     elseif ($number % 2 -eq 0) {
         "$number is even, continuing."
         $number /= 2
-        "Number is now " + $number
+        "Number is now " + $number + "."
         $count += 1
         continue
     }
     elseif ($number % 2 -ne 0) {
         "$number is odd, continuing."
         $number = ($number * 3) + 1
-        "Number is now " + $number
+        "Number is now " + $number + "."
         $count += 1
         continue
     }
