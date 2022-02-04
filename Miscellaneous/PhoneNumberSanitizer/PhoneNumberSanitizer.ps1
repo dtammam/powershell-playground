@@ -49,7 +49,7 @@ param (
     $scriptname = "PhoneNumberSanitizer"
     $logfolderpath = "C:\Program Files\_scriptLog"
     $logfilepath = "C:\Program Files\_scriptLog\$($scriptname).log"
-    $logtailpath ="C:\Program Files\_scriptLog\$($scriptname)_Transcript.log" 
+    $logtailpath = "C:\Program Files\_scriptLog\$($scriptname)_Transcript.log" 
 
     # Create our log directory if it doesn't exist.
     if (!(test-path -path $logfolderpath))
