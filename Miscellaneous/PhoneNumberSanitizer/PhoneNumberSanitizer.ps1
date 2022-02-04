@@ -57,8 +57,8 @@ param (
             new-item -itemtype directory -force -path $logfolderpath
         }
 
-    # The write_log function for documenting in our .log file.
-    function write_log($message)
+    # The write-log function for documenting in our .log file.
+    function write-log($message)
         {
             add-content $logfilepath "$(get-date) - $message"
             write-output $message
@@ -74,7 +74,7 @@ param (
     try {
         # Bring in our source .csv.
         $table = import-csv -path $file -delimiter ',' -encoding default
-        write_log "Now processing $($file)!"
+        write-log "Now processing $($file)!"
 
         # Process the phone numbers.
         foreach ($entry in $table) {
@@ -82,21 +82,21 @@ param (
             $phonenumber = $entry.phone
             # RegEx processing to format the numbers how we'd like.
             $phoneupdate = ($phonenumber -replace "\(0\)", "" -replace "[^0-9,^+]", "" -replace "^", "+1")
-            write_log "Updating $($phonenumber) to be $($phoneupdate)"
+            write-log "Updating $($phonenumber) to be $($phoneupdate)"
             # Overwrite the existing 'Phone' object in the imported table object with our newly formatted phone number.
             add-member -inputobject $entry -membertype noteproperty -name "Phone" -value $phoneupdate -force
             }
 
         # Create our new .CSV using all data from imported table object (including our new 'Phone' data).
         $table | export-csv -path $newfile -delimiter ',' -notypeinformation
-        write_log "Newly exported CSV has been created here: $($newfile)"
+        write-log "Newly exported CSV has been created here: $($newfile)"
         stop-transcript
         exit 0
     }
 
     # Handle any errors that occur.
     catch {
-        write_log "Script failed with the following exception: $($_)"
+        write-log "Script failed with the following exception: $($_)"
         stop-transcript
         exit 1
     }
