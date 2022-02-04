@@ -15,6 +15,7 @@ PhoneNumberSanitizer.ps1
 
     Version:
         2/3/2022 - Original version
+        2/3/2022 - Changed $scriptname to be hardcoded as to prevent headaches from future renaming
 
     Return Codes:
         0 - Success
@@ -37,7 +38,7 @@ param (
 ### Error handling block.
 
     # Initial variables for log collection.
-    $scriptname = $MyInvocation.MyCommand.Name
+    $scriptname = "PhoneNumberSanitizer"
     $logfolderpath = "C:\Program Files\_scriptLog"
     $logfilepath = "C:\Program Files\_scriptLog\$($scriptName).log"
     $logtailpath ="C:\Program Files\_scriptLog\$($scriptName)_Transcript.log" 
