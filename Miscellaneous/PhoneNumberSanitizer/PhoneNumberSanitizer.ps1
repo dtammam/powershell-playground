@@ -15,9 +15,9 @@ PhoneNumberSanitizer.ps1
 
         If you have any issues bypassing for the file, you can open an Administrative PowerShell terminal in the same directory as this script and do this instead:
 
-            Set-ExecutionPolicy -bypass
+            set-executionpolicy bypass
             .\PhoneNumberSanitizer.ps1 -file "sourcefile.csv" -newfile "updatedfile.csv"
-            Set-ExecutionPOlicy -restricted
+            set-executionpolicy default
 
     Version:
         2/3/2022 - Original version.
