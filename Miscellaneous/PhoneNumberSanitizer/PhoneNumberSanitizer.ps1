@@ -4,16 +4,16 @@ PhoneNumberSanitizer.ps1
 
     Goal: 
         Parses through a .csv file and sanitizes phone numbers by removing spaces and special characters then adds +1 to the beginning.
-        Simple execution with '-file'and '-newfile' parameters via PowerShell console.
+        Simple execution with '-file' and '-newfile' parameters via PowerShell console.
         Requires that the source column containing phone numbers is named 'Phone'.
 
     Audience:
         For technologists looking to update phone numbers contained in .csv's en masse. 
-        To run it securely, open an Administrative PowerShell terminal in the same directory as this script and run:
+        If using default execution policies, you'll need to either sign the script or open an Administrative PowerShell terminal in the same directory and run:
 
             powershell.exe -executionpolicy bypass -File .\PhoneNumberSanitizer.ps1 -file "*yourcsv*.csv" -newfile "*yournewcsv*.csv"
 
-        If you have any issues bypassing for the file, you can open an Administrative PowerShell terminal in the same directory as this script and do this instead:
+        You can additionally open an Administrative PowerShell terminal in the same directory as this script and run it like so:
 
             set-executionpolicy bypass
             .\PhoneNumberSanitizer.ps1 -file "sourcefile.csv" -newfile "updatedfile.csv"
@@ -21,7 +21,8 @@ PhoneNumberSanitizer.ps1
 
     Version:
         2/3/2022 - Original version.
-        2/4/2022 - Minor comment adjustments.
+        2/4/2022 - Minor comment adjustments to expound on instructions for running the script.
+        2/11/2022 - Minor comment adjustments to remove inaccurate notes.
 
     Return Codes:
         0 - Success
