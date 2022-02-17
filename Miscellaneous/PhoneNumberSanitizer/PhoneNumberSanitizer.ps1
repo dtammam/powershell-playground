@@ -39,13 +39,13 @@ PhoneNumberSanitizer.ps1
         
 #>
 
-# Param block.
+# ___Param block
 Param (
     [String]$File = $(Read-Host "Input source filename that you'd like sanitized, please."),
     [String]$NewFile = $(Read-Host "Input the name of the file you'd want once sanitized, please.")
 )
 
-# Initialization block
+# ___Initialization block
 
 # Global variables
 $Global:EventMessage = ''
@@ -73,29 +73,29 @@ Function Write-Log($Message) {
     $Global:EventMessage += $Message | Out-String
 }
 
-# Script execution block
+# ___Script execution block
 
-# Begin a tail for logging non-implicitly captured events from the terminal.
+# Begin a tail
 Start-Transcript -Path $Global:LogTailPath -Append
 
-# Overarching try block for script execution.
+# Overarching try block
 Try {
-    # Bring in our source .csv.
+    # Bring in our source .csv
     $Table = import-csv -Path $File -Delimiter ',' -Encoding Default
     Write-Log "Now processing $($File)!"
 
-    # Process the phone numbers.
+    # Process the phone numbers
     Foreach ($Entry in $Table) {
-        # Iterate through each of the phone numbers for a given column.
+        # Iterate through each of the phone numbers for a given column
         $PhoneNumber = $Entry.Phone
-        # RegEx processing to format the numbers how we'd like.
+        # RegEx processing to format the numbers how we'd like
         $PhoneUpdate = ($PhoneNumber -Replace "\(0\)", "" -Replace "[^0-9,^+]", "" -Replace "^", "+1")
         Write-Log "Updating $($PhoneNumber) to be $($PhoneUpdate)"
-        # Overwrite the existing 'Phone' object in the imported table object with our newly formatted phone number.
+        # Overwrite the existing 'Phone' object in the imported table object with our newly formatted phone number
         Add-Member -InputObject $Entry -MemberType NoteProperty -Name "Phone" -Value $PhoneUpdate -Force
     }
 
-    # Create our new .CSV using all data from imported table object (including our new 'Phone' data).
+    # Create our new .CSV using all data from imported table object (including our new 'Phone' data)
     $Table | Export-Csv -Path $NewFile -Delimiter ',' -NoTypeInformation
     Write-Log "Newly exported CSV has been created here: $($NewFile)"
 
@@ -104,7 +104,7 @@ Try {
     Exit 0
 }
 
-# Handle any errors that occur.
+# Overarching catch block
 Catch {
     Write-Log "Script failed with the following exception: $($_)"
     Write-EventLog -LogName $Global:EventLogName -Source $Global:EventSource -EntryType Information -EventId $Global:EventID -Message $($Global:EventMessage | Out-String)
