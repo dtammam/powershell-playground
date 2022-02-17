@@ -17,6 +17,7 @@ while ($true) {
     if ($number -eq 1) {
         break
     }
+
     elseif ($number % 2 -eq 0) {
         "$number is even, continuing."
         $number /= 2
@@ -24,6 +25,7 @@ while ($true) {
         $count += 1
         continue
     }
+
     elseif ($number % 2 -ne 0) {
         "$number is odd, continuing."
         $number = ($number * 3) + 1
@@ -32,4 +34,5 @@ while ($true) {
         continue
     }
 }
+
 "It took " + $count + " operations to get to 1!"

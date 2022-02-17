@@ -23,6 +23,7 @@ PhoneNumberSanitizer.ps1
         2/3/2022 - Original version.
         2/4/2022 - Minor comment adjustments to expound on instructions for running the script.
         2/11/2022 - Minor comment adjustments to remove inaccurate notes.
+        2/17/2022 - Formatting changes, global variables for all, proper casing, new Event Log capturing.
 
     Return Codes:
         0 - Success
@@ -38,66 +39,75 @@ PhoneNumberSanitizer.ps1
         
 #>
 
-# Param block for source filename and new filename arguments via terminal.
-param (
-    [string]$file = $(read-host "Input source filename that you'd like sanitized, please."),
-    [string]$newfile = $(read-host "Input the name of the file you'd want once sanitized, please.")
+# Param block.
+Param (
+    [String]$File = $(Read-Host "Input source filename that you'd like sanitized, please."),
+    [String]$NewFile = $(Read-Host "Input the name of the file you'd want once sanitized, please.")
 )
 
-### Error handling block.
+# Initialization block
 
-    # Initial variables for log collection.
-    $scriptname = "PhoneNumberSanitizer"
-    $logfolderpath = "C:\Program Files\_scriptLog"
-    $logfilepath = "C:\Program Files\_scriptLog\$($scriptname).log"
-    $logtailpath = "C:\Program Files\_scriptLog\$($scriptname)_Transcript.log" 
+# Global variables
+$Global:EventMessage = ''
+$Global:ScriptName = 'PhoneNumberSanitizer'
+$Global:EventSource = "$($Global:ScriptName)"
+$Global:EventLogName = 'Application'
+$Global:EventID = '601'
 
-    # Create our log directory if it doesn't exist.
-    if (!(test-path -path $logfolderpath))
-        {
-            new-item -itemtype directory -force -path $logfolderpath
-        }
+# Error handling variables
+$Global:LogFolderPath = 'C:\Program Files\_scriptLog'
+$Global:LogFilePath = "C:\Program Files\_scriptLog\$($Global:ScriptName).log"
+$Global:LogTailPath = "C:\Program Files\_scriptLog\$($Global:ScriptName)_Transcript.log" 
 
-    # The write-log function for documenting in our .log file.
-    function write-log($message)
-        {
-            add-content $logfilepath "$(get-date) - $message"
-            write-output $message
-            $global:event_msg += $message | out-string
-        }
+# Folder and event for error handling.
+If (!(Test-Path -Path $Global:LogFolderPath)) {
+    new-item -itemtype directory -force -Path $Global:LogFolderPath
+}
 
-### Script execution block.
+New-EventLog -LogName $Global:EventLogName -Source $Global:EventSource -MessageResourceFile 'C:\Windows\Microsoft.NET\Framework\v4.0.30319\EventLogMessages.dll' -ErrorAction SilentlyContinue
 
-    # Begin a tail for logging non-implicitly captured events from the terminal.
-    start-transcript -path $logtailpath -append
+# Write-Log function
+Function Write-Log($Message) {
+    Add-Content $Global:LogFilePath "$(Get-Date) - $Message"
+    write-output $Message
+    $Global:EventMessage += $Message | Out-String
+}
 
-    # Overarching try block for script execution.
-    try {
-        # Bring in our source .csv.
-        $table = import-csv -path $file -delimiter ',' -encoding default
-        write-log "Now processing $($file)!"
+# Script execution block
 
-        # Process the phone numbers.
-        foreach ($entry in $table) {
-            # Iterate through each of the phone numbers for a given column.
-            $phonenumber = $entry.phone
-            # RegEx processing to format the numbers how we'd like.
-            $phoneupdate = ($phonenumber -replace "\(0\)", "" -replace "[^0-9,^+]", "" -replace "^", "+1")
-            write-log "Updating $($phonenumber) to be $($phoneupdate)"
-            # Overwrite the existing 'Phone' object in the imported table object with our newly formatted phone number.
-            add-member -inputobject $entry -membertype noteproperty -name "Phone" -value $phoneupdate -force
-            }
+# Begin a tail for logging non-implicitly captured events from the terminal.
+Start-Transcript -Path $Global:LogTailPath -Append
 
-        # Create our new .CSV using all data from imported table object (including our new 'Phone' data).
-        $table | export-csv -path $newfile -delimiter ',' -notypeinformation
-        write-log "Newly exported CSV has been created here: $($newfile)"
-        stop-transcript
-        exit 0
+# Overarching try block for script execution.
+Try {
+    # Bring in our source .csv.
+    $Table = import-csv -Path $File -Delimiter ',' -Encoding Default
+    Write-Log "Now processing $($File)!"
+
+    # Process the phone numbers.
+    Foreach ($Entry in $Table) {
+        # Iterate through each of the phone numbers for a given column.
+        $PhoneNumber = $Entry.Phone
+        # RegEx processing to format the numbers how we'd like.
+        $PhoneUpdate = ($PhoneNumber -Replace "\(0\)", "" -Replace "[^0-9,^+]", "" -Replace "^", "+1")
+        Write-Log "Updating $($PhoneNumber) to be $($PhoneUpdate)"
+        # Overwrite the existing 'Phone' object in the imported table object with our newly formatted phone number.
+        Add-Member -InputObject $Entry -MemberType NoteProperty -Name "Phone" -Value $PhoneUpdate -Force
     }
 
-    # Handle any errors that occur.
-    catch {
-        write-log "Script failed with the following exception: $($_)"
-        stop-transcript
-        exit 1
-    }
+    # Create our new .CSV using all data from imported table object (including our new 'Phone' data).
+    $Table | Export-Csv -Path $NewFile -Delimiter ',' -NoTypeInformation
+    Write-Log "Newly exported CSV has been created here: $($NewFile)"
+
+    Write-EventLog -LogName $Global:EventLogName -Source $Global:EventSource -EntryType Information -EventId $Global:EventID -Message $($Global:EventMessage | Out-String)
+    Stop-Transcript
+    Exit 0
+}
+
+# Handle any errors that occur.
+Catch {
+    Write-Log "Script failed with the following exception: $($_)"
+    Write-EventLog -LogName $Global:EventLogName -Source $Global:EventSource -EntryType Information -EventId $Global:EventID -Message $($Global:EventMessage | Out-String)
+    Stop-Transcript
+    Exit 1
+}
