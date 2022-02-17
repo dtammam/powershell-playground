@@ -59,7 +59,7 @@ $Global:LogFolderPath = 'C:\Program Files\_scriptLog'
 $Global:LogFilePath = "C:\Program Files\_scriptLog\$($Global:ScriptName).log"
 $Global:LogTailPath = "C:\Program Files\_scriptLog\$($Global:ScriptName)_Transcript.log" 
 
-# Folder and event for error handling.
+# Folder and event for error handling
 If (!(Test-Path -Path $Global:LogFolderPath)) {
     new-item -itemtype directory -force -Path $Global:LogFolderPath
 }
