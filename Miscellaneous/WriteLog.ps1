@@ -1,8 +1,8 @@
 <#
 WriteLog.ps1
 
-    Goal: 
-        The purpose of this module is to allow clean and consistent logging when running PowerShell scripts. 
+    Goal:
+        The purpose of this module is to allow clean and consistent logging when running PowerShell scripts.
 
     Audience:
         The audience would be technologists looking for more functional log standardization as they write and execute scripts.
@@ -23,7 +23,7 @@ WriteLog.ps1
     $scriptName = $MyInvocation.MyCommand.Name
     $logFolderPath = "C:\Program Files\_scriptLog"
     $logFilePath = "C:\Program Files\_scriptLog\$($scriptName).log"
-    $logTailPath ="C:\Program Files\_scriptLog\$($scriptName)_Transcript.log" 
+    $logTailPath ="C:\Program Files\_scriptLog\$($scriptName)_Transcript.log"
 
     $eventSource = "ExampleScript"
     $scriptVer = "1.0"
@@ -50,6 +50,3 @@ WriteLog.ps1
 
     # Example code for testing the function.
     write_log "Testing this script. It all looks good!"
-
-
-Get-H
