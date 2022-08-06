@@ -54,6 +54,3 @@ function Write-Event($EventID, $Message) {
 
     Return Write-EventLog -LogName $EventLogName -Source $Global:EventSource -EntryType Information -EventId $EventID -Message $Message
 }
-
-<# Write-EventLog -LogName $Global:EventLogName -Source $Global:EventSource -EntryType Information -EventId $Global:EventID -Message $($Global:EventMessage | Out-String)
-#>
