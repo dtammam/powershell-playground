@@ -1,4 +1,4 @@
-Screenshot Copying for DDR
+Screenshot Copying for DDR/ITG
 =====================
 
 I realized that I was getting very distracted when playing DDR/ITG at home and it was because I was taking photos from my phone. When I'd open it... I'd open another app sometimes and get distracted. So, how about just take a photo on the machine and have it land on my phone automatically?
