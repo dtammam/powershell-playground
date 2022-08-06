@@ -36,7 +36,6 @@ PhoneNumberSanitizer.ps1
 
     Author:
         Dean Tammam
-        
 #>
 
 # ___Param block
