@@ -3,7 +3,7 @@ PowerShell Modules in a Nutshell
 
 I did some digging and figured out how Powershell Modules work. To explain it, I'll use the shell of the directories in this project. In so many words...
 
-Conceptually:
+Conceptual
 -------------
 - PowerShell modules are .psm1 format
 - PowerShell manifests are .psd1 format... and are optional
@@ -12,7 +12,7 @@ Conceptually:
 - PowerShell modules can be called like *Import-Module -Name "$($PSScriptRoot)\ModuleName" -Force* and not need the module to be on the users' system within Documents... making it truly portable
 - Module manifests allow for version controlling and other really cool attributes that can be controlled pre-execution
 
-Tactically:
+Tactical
 -------------
 1. Start with an initial project (*ModuleCom*)
 2. Create a sub-folder that will be the name of the module (*CommonUtilties*)
@@ -22,7 +22,7 @@ Tactically:
 5. Create your .psd1 file which is the manifest itself. You can do so by New-ModuleManifest (*CommonUtilities.psd1*)
 6. Write your actual script, importing the modules and getting the commands (*ModuleCom.ps1*)
 
-Resources:
+Resources
 -------------
 If you'd like to see how they're actually used, check the files in this repo. It's a fully functional project that can be downloaded, executed and tweaked as a proof-of-concept.
 
