@@ -24,6 +24,8 @@ Tactically:
 
 Resources:
 -------------
+If you'd like to see how they're actually used, check the files in this repo. It's a fully functional project that can be downloaded, executed and tweaked as a proof-of-concept.
+
 I got **a lot** of value from the following resources:
 1. [Kamil Pro's breakdown on YouTube](https://www.youtube.com/watch?v=xPQq0ui8j78 "PowerShell Module and Manifest- create and configure your tools")
 2. [Bryan Cafferky's breakdown on YouTube](https://www.youtube.com/watch?v=AgCRjWRliwE "PowerShell Module 5: Creating Custom PowerShell Modules")
