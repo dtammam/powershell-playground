@@ -5,8 +5,8 @@ I realized that I was getting very distracted when playing DDR/ITG at home and i
 
 Audience
 -------------
-- DDR/ITG players with a home setup
-- Home setup is running Windows
+- DDR/ITG players with a home cabinet/setup
+- Home cabinet/setup is running Windows
 - Mobile phone is an iPhone
 - Moderate technical experience
 
