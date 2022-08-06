@@ -18,7 +18,7 @@ Tactically:
 2. Create a sub-folder that will be the name of the module (*CommonUtilties*)
 3. Create a sub-folder in that for your functions (*Functions*)
 3. Create the .psm1 file which will call all functions within your function directory (*CommonUtilities.psm1*)
-4 Create your actual functions as independent scripts within your functions directory. Use the .SYNOPSIS formatted commenting to empower users to leverage Get-Help (*Write-Event* and *Write-Log*)
+4. Create your actual functions as independent scripts within your functions directory. Use the .SYNOPSIS formatted commenting to empower users to leverage Get-Help (*Write-Event* and *Write-Log*)
 5. Create your .psd1 file which is the manifest itself. You can do so by New-ModuleManifest (*CommonUtilities.psd1*)
 6. Write your actual script, importing the modules and getting the commands (*ModuleCom.ps1*)
 
