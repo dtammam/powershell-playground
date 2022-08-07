@@ -1,5 +1,5 @@
 <#
-ScreenshotCopy.ps1
+CommonUtilities.psm1
 
     Goal:
         Save time
