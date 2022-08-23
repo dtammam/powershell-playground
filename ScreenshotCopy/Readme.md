@@ -1,16 +1,23 @@
-Screenshot Copying for DDR
+Screenshot Copying for DDR/ITG
 =====================
 
-I realized that I was getting very distracted when playing DDR/ITG and it was because I was taking photos from my phone. When I'd open it... I'd open another app sometimes and get distracted. So, how about just take a photo on the machine and have it land on my phone automatically?
+I realized that I was getting very distracted when playing DDR/ITG at home and it was because I was taking photos from my phone. When I'd open it... I'd open another app sometimes and get distracted. So, how about just take a photo on the machine and have it land on my phone automatically?
 
-Conceptually:
+Audience
+-------------
+- DDR/ITG players with a home cabinet/setup
+- Home cabinet/setup is running Windows
+- Mobile phone is an iPhone
+- Moderate technical experience
+
+Conceptual
 -------------
 - Install AutoHotKey and iCloud Photos on your Windows-based DDR/ITG machine
 - Pick a button on the machine to take the screenshot
 - Update the script with directories (root screenshot folder and destination, which is iCloud Uploads)
 - Play the game, press the screenshot button... give it a few seconds and have it upload to your phone :)
 
-Tactically:
+Tactical
 -------------
 1. Download and install iCloud on your machine, login, only enable photos. Go to Options and only select 'iCloud Photo Library' and 'Upload new photos and videos from my PC', noting the path.
 2. Download and update *ScreenshotCopy.ps1* lines 46 and 47 with your directories (46 being the screenshot folder, 47 being your iCloud upload directory you just saved). Save the file itself to 'C:\Games'
@@ -18,7 +25,7 @@ Tactically:
 4. Double-click *PlusToPrintScreen.ahk* so that it launches as a running script (Note, this is a one-time thing. Since you put it in startup, it'll open when the machine starts)
 5. In the game, press your screenshot button. After a few seconds, check your photo roll and enjoy your crispy, high-resolution, distraction-free scores :)
 
-Resources:
+Resources
 -------------
 It's a fully functional project that can be downloaded, executed and tweaked as a proof-of-concept.
 
