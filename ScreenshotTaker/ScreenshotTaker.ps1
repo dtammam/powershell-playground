@@ -9,15 +9,17 @@ ScreenshotCopy.ps1
         Automation-oriented screenshotters.
 
     Version:
-        8/17 - Original version
+        8/17/2022 - Original version
+        8/27/2022 - Code block for sound to screenshot and upload
+        8/28/2022 - Added logic to 'stage' picture instead of saving it in destination directory to prevent iCloud sync confusion
 
     Return Codes:
         Success - 0
         Failure - 1
 
     References:
-        Guide - https://www.pdq.com/blog/capturing-screenshots-with-powershell-and-net/
         Image saving logic - https://docs.microsoft.com/en-us/dotnet/api/system.drawing.image.save?view=dotnet-plat-ext-6.0
+        Playing a sound with a .NET call - https://devblogs.microsoft.com/scripting/powertip-use-powershell-to-play-wav-files/
 #>
 
 # Global variables for various logging functions
@@ -44,8 +46,11 @@ try {
     Start-Transcript -Path $LogTailPath -Append
 
     # Prep variables for the file we'll create
-    $FileName = Get-Date -Format yyyy-MM-dd_hh-mm
-    $File = "C:\Users\me\Pictures\Uploads\$($FileName).jpg"
+    $FileName = Get-Date -Format yyyy-MM-dd_hh-mm-ss
+    # $File = "C:\Users\me\Pictures\Uploads\$($FileName).jpg"
+    $RootPath = "C:\Staging"
+    $DestPath = "C:\Users\me\Pictures\Uploads\"
+    $File = "C:\Staging\$($FileName).jpg"
 
     # Add assembly references
     Add-Type -AssemblyName System.Windows.Forms
@@ -67,9 +72,35 @@ try {
     # Capture the content on screen
     $GraphicObject.CopyFromScreen($Left, $Top, 0, 0, $Bitmap.Size)
 
+    # Play a sound to confirm the picture being taken
+    $PlayBeep = New-Object System.Media.SoundPlayer
+    $PlayBeep.SoundLocation="C:\Games\camera-focus-beep-01.wav"
+    $PlayBeep.playsync()
+
     # Save to a .jpg file
     $Bitmap.Save($File)
+    Start-Sleep -Seconds 1
+
+    # Find all folders in the root directory
+    $FileList = (Get-ChildItem $RootPath -Recurse).FullName
+
+    # For each of these files in the root directory...
+    Foreach ($File in $FileList) {
+        # Copy to the destination directory
+        Copy-Item -Path $File -Destination $DestPath
+        Write-Log "Successfully copied $($File) to destination"
+        # Now that its' processed... delete it from the root directory
+        Remove-Item -Path $File
+        Write-Log "Successfully deleted $($File) in root"
+        # Update the counter for total files processed at the end
+    }
+
+    # Play a sound to confirm the picture being uploaded
+    $PlayShutter = New-Object System.Media.SoundPlayer
+    $PlayShutter.SoundLocation="C:\Games\camera-shutter-click-01.wav"
+    $PlayShutter.playsync()
     Write-Log "Screenshot saved to $($File)"
+    Write-Log $File
 
     # Cleanup and exit script
     Write-Log "Script complete."
