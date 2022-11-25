@@ -104,10 +104,10 @@ Try {
         Write-Log "Copied $Script:FileSourceDirectory\$Item to $Script:FileDestinationDirectory\$Item"
         $Script:MatchCounter += 1
     }
-    $Script:ExitCode = $Script:SuccessExitCode
     Write-Log "$($Script:ScriptName): Total source files: $Script:QueryCounter"
     Write-Log "$($Script:ScriptName): Total processed files: $Script:MatchCounter"
     Write-Log "$($Script:ScriptName): Script complete."
+    $Script:ExitCode = $Script:SuccessExitCode
 }
 
 Catch {
