@@ -71,7 +71,6 @@ Function Start-Sound ($Path) {
     $Sound.playsync()
 }
 
-
 Try {
     Open-Header
     Start-Transcript -Path $LogTailPath -Append
@@ -89,6 +88,5 @@ Catch {
 
 Finally {
     Stop-Transcript
-    "Exiting with $ExitCode"
     Exit $ExitCode
 }
