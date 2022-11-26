@@ -19,6 +19,12 @@ Version 1.0: 11/25/2022 - Original version
 
 #>
 
+param (
+    [string]$Operator = (Read-Host -Prompt "Input regex type (match or notmatch)"),
+    [string]$SearchString = (Read-Host -Prompt "Input string to query for")
+
+)
+
 Function Open-Header {
     <#
     .SYNOPSIS 
@@ -80,15 +86,31 @@ Function Get-FileMatches ($String) {
     .SYNOPSIS 
         Matches files by name.
     .DESCRIPTION
-        Matches files by name using regular expression.
+        Matches files by name using regular expression. Depending on the parameter used when launching the script, the function looks for matching or not matching patterns.
     #>
-    $Script:NotMatchList = [System.Collections.ArrayList]@()
+    $Script:MatchList = [System.Collections.ArrayList]@()
     $Script:MatchCounter = 0
-    ForEach ($File in $Script:FileQuery) {
-        If ($File -notmatch $String) {
-            Write-Log "$File does not contain $String"
-            $NotMatchList.Add($File)
+
+    If ($Operator -eq 'match') {
+        ForEach ($File in $Script:FileQuery) {
+            If ($File -match $String) {
+                Write-Log "$File $Operator $String"
+                $MatchList.Add($File)
+            }
         }
+    }
+
+    ElseIf ($Operator -eq 'notmatch') {
+        ForEach ($File in $Script:FileQuery) {
+            If ($File -notmatch $String) {
+                Write-Log "$File $Operator $String"
+                $MatchList.Add($File)
+            }
+        }
+    }
+
+    Else {
+        "Invalid selection, please attempt to match or notmatch."
     }
 }
 
@@ -97,21 +119,21 @@ Try {
     Start-Transcript -Path $LogTailPath -Append
     Write-Log "$($Script:ScriptName): Opening files..."
     Get-Files
-    Write-Log "$($Script:ScriptName): Opened files. Processing files..."
-    Get-FileMatches "Japan"
-    ForEach ($Item in $NotMatchList) {
+    Write-Log "Opened files. Processing files..."
+    Get-FileMatches "$SearchString"
+    ForEach ($Item in $MatchList) {
         Copy-Item -Path $Script:FileSourceDirectory\$Item -Destination $Script:FileDestinationDirectory\$Item
         Write-Log "Copied $Script:FileSourceDirectory\$Item to $Script:FileDestinationDirectory\$Item"
         $Script:MatchCounter += 1
     }
-    Write-Log "$($Script:ScriptName): Total source files: $Script:QueryCounter"
-    Write-Log "$($Script:ScriptName): Total processed files: $Script:MatchCounter"
-    Write-Log "$($Script:ScriptName): Script complete."
+    Write-Log "Total source files: $Script:QueryCounter"
+    Write-Log "Total processed files: $Script:MatchCounter"
+    Write-Log "Script complete."
     $Script:ExitCode = $Script:SuccessExitCode
 }
 
 Catch {
-    Write-Log "$($Script:ScriptName): Script failed with the following exception: $_"
+    Write-Log "Script failed with the following exception: $_"
     $Script:ExitCode = $Script:FailureExitCode
 }
 
