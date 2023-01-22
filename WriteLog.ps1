@@ -1,6 +1,5 @@
 <#
 WriteLog.ps1
-
     Goal:
         The purpose of this module is to allow clean and consistent logging when running PowerShell scripts.
 
