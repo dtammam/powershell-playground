@@ -28,9 +28,11 @@ $Global:FailureExitCode = '1'
 
 # Import functions from common utilities module, removing it first in case anything is sitting in memory
 Remove-Module -Name CommonUtilities -ErrorAction SilentlyContinue
-Import-Module -Name "$($PSScriptRoot)\CommonUtilities" -Force
+#Import-Module -Name "$($PSScriptRoot)\CommonUtilities" -Force
+Import-Module -Name "$($PSScriptRoot)\Write-Log" -Force
 # Now that it's imported, get the cmdlets out of the module
-Get-Command -Module CommonUtilities
+#Get-Command -Module CommonUtilities
+Get-Command -Module Write-Log
 
 # Overarching Try block for execution
 try {
