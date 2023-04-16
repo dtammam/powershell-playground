@@ -53,41 +53,41 @@ $appForm.Font = $defaultFont
 
 # --- Define UI elements ---
 
-    # Services label
-    $labelService = New-Object $labelObject
-    $labelService.Text = 'Services:'
-    $labelService.AutoSize = $true
-    $labelService.Location = New-Object System.Drawing.Point(20,20)
+# Services label
+$labelService = New-Object $labelObject
+$labelService.Text = 'Services:'
+$labelService.AutoSize = $true
+$labelService.Location = New-Object System.Drawing.Point(20,20)
 
-    # Services dropdown
-    $dropDownService = New-Object $comboBoxObject
-    $dropDownService.Width = '300'
-    $dropDownService.Location = New-Object System.Drawing.Point(150,20)
-    $dropDownService.Text = 'Pick a service...'
+# Services dropdown
+$dropDownService = New-Object $comboBoxObject
+$dropDownService.Width = '300'
+$dropDownService.Location = New-Object System.Drawing.Point(150,20)
+$dropDownService.Text = 'Pick a service...'
 
-    # Service Friendly Name label
-    $labelServiceForName = New-Object $labelObject
-    $labelServiceForName.Text = 'Service Friendly Name:'
-    $labelServiceForName.AutoSize = $true
-    $labelServiceForName.Location = New-Object System.Drawing.Point(20,60)
+# Service Friendly Name label
+$labelServiceForName = New-Object $labelObject
+$labelServiceForName.Text = 'Service Friendly Name:'
+$labelServiceForName.AutoSize = $true
+$labelServiceForName.Location = New-Object System.Drawing.Point(20,60)
 
-    # Service Friendly Name display label
-    $labelServiceName = New-Object $labelObject
-    $labelServiceName.Text = ''
-    $labelServiceName.AutoSize = $true
-    $labelServiceName.Location = New-Object System.Drawing.Point(240,60)
+# Service Friendly Name display label
+$labelServiceName = New-Object $labelObject
+$labelServiceName.Text = ''
+$labelServiceName.AutoSize = $true
+$labelServiceName.Location = New-Object System.Drawing.Point(240,60)
 
-    # Service Status label
-    $labelServiceForState = New-Object $labelObject
-    $labelServiceForState.Text = 'Service Status:'
-    $labelServiceForState.AutoSize = $true
-    $labelServiceForState.Location = New-Object System.Drawing.Point(20,90)
+# Service Status label
+$labelServiceForState = New-Object $labelObject
+$labelServiceForState.Text = 'Service Status:'
+$labelServiceForState.AutoSize = $true
+$labelServiceForState.Location = New-Object System.Drawing.Point(20,90)
 
-    # Service Status display label
-    $labelServiceState = New-Object $labelObject
-    $labelServiceState.Text = ''
-    $labelServiceState.AutoSize = $true
-    $labelServiceState.Location = New-Object System.Drawing.Point(240,90)
+# Service Status display label
+$labelServiceState = New-Object $labelObject
+$labelServiceState.Text = ''
+$labelServiceState.AutoSize = $true
+$labelServiceState.Location = New-Object System.Drawing.Point(240,90)
 
 # Populate the dropdown list of services
 Get-Service | ForEach-Object {$dropDownService.Items.Add($PSItem.Name)}

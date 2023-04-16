@@ -1,0 +1,20 @@
+﻿ServiceSelector-GUI
+1.0.0.0
+
+winexe
+C#
+.cs
+C:\PowerShell-Scripts\GUI Demo\Visual Studio\ServiceSelector-GUI\obj\Debug\net6.0-windows\
+ServiceSelector_GUI
+none
+false
+TRACE;DEBUG;NET;NET6_0;NETCOREAPP
+C:\PowerShell-Scripts\GUI Demo\Visual Studio\ServiceSelector-GUI\App.xaml
+11407045341
+
+5-684604695
+194101785492
+MainWindow.xaml;
+
+False
+

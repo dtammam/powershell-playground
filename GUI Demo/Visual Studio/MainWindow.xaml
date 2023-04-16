@@ -1,0 +1,19 @@
+﻿<Window x:Class="ServiceSelector_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ServiceSelector_GUI"
+        mc:Ignorable="d"
+        Title="Service Selector" Height="200
+        " Width="500">
+    <Grid Width="500" HorizontalAlignment="Center" Margin="0,0,0,2">
+        <ComboBox x:Name="dropDownService" HorizontalAlignment="Left" Margin="182,28,0,0" VerticalAlignment="Top" Width="258"/>
+        <Label Content="Services:" HorizontalAlignment="Left" Margin="21,106,0,0" VerticalAlignment="Top"/>
+        <Label Content="Friendly Service Name:" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top"/>
+        <Label Content="State:" HorizontalAlignment="Left" Margin="21,65,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelServiceState" Content="Label" HorizontalAlignment="Left" Margin="182,106,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelServiceName" Content="Label" HorizontalAlignment="Left" Margin="182,65,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
