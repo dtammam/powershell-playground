@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ServiceSelector_GUI
-build_property.ProjectDir = c:\PowerShell-Scripts\GUI Demo\Visual Studio\ServiceSelector-GUI\
+build_property.ProjectDir = c:\Repositories\PowerShell-Scripts\GUI Demo\Visual Studio\ServiceSelector-GUI\
