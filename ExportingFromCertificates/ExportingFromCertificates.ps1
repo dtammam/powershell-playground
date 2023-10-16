@@ -10,7 +10,7 @@ and then exports each matched certificate to a separate file in the specified ou
 .PARAMETER FilePath
 The path to the file containing certificates to be exported.
 
-.PARAMETER Pattern
+.PARAMETER CertificatePattern
 The regex pattern to use for matching certificates in the file.
 
 .PARAMETER NamingScheme
