@@ -1,3 +1,5 @@
 /.vscode
 .vscode
 Ignore
+Projects/GUI Demo/Visual Studio/ServiceSelector-GUI/obj/Debug/net6.0-windows/ServiceSelector-GUI.assets.cache
+Projects/GUI Demo/Visual Studio/ServiceSelector-GUI/obj/Debug/net6.0-windows/ServiceSelector-GUI.GeneratedMSBuildEditorConfig.editorconfig
