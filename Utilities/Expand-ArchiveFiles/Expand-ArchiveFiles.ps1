@@ -13,14 +13,13 @@ The path to the directory containing the ZIP files to be extracted. This paramet
 
 .PARAMETER TargetDirectory
 The path to the directory where the ZIP files will be extracted to. If this directory does not exist, the function will attempt to create it. 
-This parameter must be a valid directory path as a string.
 
 .EXAMPLE
 PS> Expand-ArchiveFiles -SourceDirectory "C:\Source" -TargetDirectory "C:\Target"
 Expands all ZIP files from C:\Source to C:\Target, creating the target directory if it doesn't exist, and reports each extraction's duration.
 
 .INPUTS
-None. You cannot pipe objects to Expand-ArchiveFiles.
+Just the parameters.
 
 .OUTPUTS
 String. Outputs the process of verification, creation (if applicable), extraction of ZIP files, and deletion (if applicable), including 
@@ -30,6 +29,7 @@ any errors encountered.
 - The function currently only supports .zip files. Future enhancements may include support for .rar files.
 - The deletion feature needs to be verified for proper functionality.
 - Special consideration for handling illegal characters in file and directory names is planned for future updates.
+- I am showing something really cool to Amira.
 #>
 
     param(
