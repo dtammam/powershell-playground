@@ -3,22 +3,25 @@ function Expand-ArchiveFiles {
 .SYNOPSIS
     Expands ZIP archive files from a source directory to a target directory.
 .DESCRIPTION
-    This function searches for all .zip files within a specified source directory and extracts them to a target directory. 
-    If the target directory does not exist, it attempts to create it. The function also provides the option to delete the archive files 
-    after extraction. It outputs the duration of each extraction process and the total count of processed archives.
+    This function searches for all .zip files within a specified source directory and extracts them to a target 
+    directory. If the target directory does not exist, it attempts to create it. The function also provides the option
+    to delete the archive files after extraction. It outputs the duration of each extraction process and the total
+    count of processed archives.
 .PARAMETER SourceDirectory
-    The path to the directory containing the ZIP files to be extracted. This parameter must be a valid directory path as a string.
+    The path to the directory containing the ZIP files to be extracted. This parameter must be a valid directory 
+    path as a string.
 .PARAMETER TargetDirectory
-    The path to the directory where the ZIP files will be extracted to. If this directory does not exist, the function will attempt to create it. 
-    This parameter must be a valid directory path as a string.
+    The path to the directory where the ZIP files will be extracted to. If this directory does not exist, 
+    the function will attempt to create it. This parameter must be a valid directory path as a string.
 .EXAMPLE
     PS> Expand-ArchiveFiles -SourceDirectory "C:\Source" -TargetDirectory "C:\Target"
-    Expands all ZIP files from C:\Source to C:\Target, creating the target directory if it doesn't exist, and reports each extraction's duration.
+    Expands all ZIP files from C:\Source to C:\Target, creating the target directory if it doesn't exist, and 
+    reports each extraction's duration.
 .INPUTS
     None. You cannot pipe objects to Expand-ArchiveFiles.
 .OUTPUTS
-    String. Outputs the process of verification, creation (if applicable), extraction of ZIP files, and deletion (if applicable), including 
-    any errors encountered.
+    String. Outputs the process of verification, creation (if applicable), extraction of ZIP files, and deletion
+     (if applicable), including any errors encountered.
 .NOTES
     - The function currently only supports .zip files. Future enhancements may include support for .rar files.
     - The deletion feature needs to be verified for proper functionality.
