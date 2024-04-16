@@ -62,21 +62,26 @@ function Expand-ArchiveFiles {
             $destinationPath = $TargetDirectory
             [int]$totalArchiveCount = 0
 
-            # Extract the archive to the target path
-            Write-Output $archive.FullName
+            # Replace illegal characters in the filename
+            $safeFileName = $archive.Name -replace '[\\/:*?"<>|]', ''
+
+            # Construct the safe destination path
+            $destinationPath = Join-Path -Path $TargetDirectory -ChildPath $safeFileName
+
+            Write-Output $safeFileName.FullName
             $duration = Measure-Command {
                 # Keep track of how long it takes to unzip, and a count of how many we unzip
-                Expand-Archive -Path $archive.FullName -DestinationPath $destinationPath -Force
+                Expand-Archive -Path $safeFileName.FullName -DestinationPath $destinationPath -Force
                 $totalArchiveCount++
             }
             
             # Write the result
-            Write-Output "Extracting [`"$($archive.Name)`"] to [`"$destinationPath`"] took [$($duration.TotalSeconds)] seconds."
+            Write-Output "Extracting [`"$($safeFileName.Name)`"] to [`"$destinationPath`"] took [$($duration.TotalSeconds)] seconds."
 
             # If it is a .zip file, delete it once extracted
-            if ($archive.FullName -like '*.zip') {
-                Remove-Item -Path $archive.FullName -Force
-                Write-Output "Deleted [`"$($archive.Name)`"] from [`"$SourceDirectory`"]"
+            if ($safeFileName.FullName -like '*.zip') {
+                Remove-Item -Path $safeFileName.FullName -Force
+                Write-Output "Deleted [`"$($safeFileName.Name)`"] from [`"$SourceDirectory`"]"
             }
 
         }
@@ -91,4 +96,4 @@ function Expand-ArchiveFiles {
         }
     }
 }
-Expand-ArchiveFiles -SourceDirectory "C:\Users\dean\Downloads\Packs" -TargetDirectory "\\CLEARBOOK\Games\ITGMania 0.7.0\Songs"
+Expand-ArchiveFiles -SourceDirectory "C:\Users\dean\Downloads\Packs" -TargetDirectory "\\CLEARBOOK\Games\ITGMania 0.8.0\Songs" -Verbose
