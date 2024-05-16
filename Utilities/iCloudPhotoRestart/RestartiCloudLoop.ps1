@@ -28,10 +28,6 @@
 
     One person referencing the issue: https://www.reddit.com/r/iCloud/comments/lptouf/icloud_photos_for_windows/
 #>
-
-# Define good/bad exit codes
-
-
 try {
     # Variable declaration
     [int]$exitCode = -1
@@ -97,14 +93,12 @@ try {
             Write-Output "iCloud Fix: Successfully deleted [$($deletedCount)] photos."
             continue
         }
+
         # Restart the loop
         Start-Sleep -Seconds 2
         Write-Output "iCloud Fix: Restarting the loop..."
         [int]$deletedCount = 0
     }
-
-    # Clean exit in the event that this ever exits cleanly
-    Write-Output "This should never have ended. But if it did... it was graceful."
     $exitCode = 0
 } catch {
     Write-Output "Script failed with the following exception: [$($_)]"
