@@ -1,35 +1,33 @@
 function Expand-ArchiveFiles {
-<#
-.SYNOPSIS
-    Expands ZIP archive files from a source directory to a target directory.
-.DESCRIPTION
-    This function searches for all .zip files within a specified source directory and extracts them to a target 
-    directory. If the target directory does not exist, it attempts to create it. The function also provides the option
-    to delete the archive files after extraction. It outputs the duration of each extraction process and the total
-    count of processed archives.
-.PARAMETER SourceDirectory
-    The path to the directory containing the ZIP files to be extracted. This parameter must be a valid directory 
-    path as a string.
-.PARAMETER TargetDirectory
-    The path to the directory where the ZIP files will be extracted to. If this directory does not exist, 
-    the function will attempt to create it. This parameter must be a valid directory path as a string.
-.EXAMPLE
-    PS> Expand-ArchiveFiles -SourceDirectory "C:\Source" -TargetDirectory "C:\Target"
-    Expands all ZIP files from C:\Source to C:\Target, creating the target directory if it doesn't exist, and 
-    reports each extraction's duration.
-.INPUTS
-    None. You cannot pipe objects to Expand-ArchiveFiles.
-.OUTPUTS
-    String. Outputs the process of verification, creation (if applicable), extraction of ZIP files, and deletion
-     (if applicable), including any errors encountered.
-.NOTES
-    - The function currently only supports .zip files. Future enhancements may include support for .rar files.
-    - The deletion feature needs to be verified for proper functionality.
-    - Special consideration for handling illegal characters in file and directory names is planned for future updates.
-#>
+    <#
+    .SYNOPSIS
+        Extracts all .zip files from a specified source directory to a target directory.
+    .DESCRIPTION
+        This function checks for the existence of the source and target directories, creates the target 
+        directory if it does not exist, and then proceeds to extract each .zip file found in the source 
+        directory to the target directory. Each file is extracted to a temporary directory first to measure 
+        the time taken for extraction, and then moved to the final destination. 
+        The function also handles the deletion of the original .zip files post-extraction.
+    .PARAMETER SourceDirectory
+        The directory path where the .zip files are located.
+    .PARAMETER TargetDirectory
+        The directory path where the .zip files should be extracted to.
+    .EXAMPLE
+        Expand-ArchiveFiles -SourceDirectory "C:\Users\dean\Downloads\Packs" -TargetDirectory "\\CLEARBOOK\Games\ITGMania 0.8.0\Songs"
+
+        Extracts all .zip files from "C:\Users\dean\Downloads\Packs" to "\\CLEARBOOK\Games\ITGMania 0.8.0\Songs".
+    .NOTES
+        This function requires at least PowerShell 5.0 due to the usage of the Expand-Archive cmdlet.
+    #>
+
     [CmdletBinding()]
     param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [string]$SourceDirectory,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [string]$TargetDirectory
     )
 
@@ -60,20 +58,30 @@ function Expand-ArchiveFiles {
         foreach ($archive in $archives) {
             # We are looking to extract to our predetermined location
             $destinationPath = $TargetDirectory
-            [int]$totalArchiveCount = 0
-        
+            
             # Replace illegal characters in the filename
             $safeFileName = $archive.Name -replace '[\\/:*?"<>|]', ''
-        
+
             # Construct the safe destination path
             $destinationPath = Join-Path -Path $TargetDirectory -ChildPath $safeFileName
         
+            # Create a temporary directory and measure the time taken to extract the archive there
             Write-Output "$archive.FullName"
+            $tempDestinationPath = Join-Path -Path $env:TEMP -ChildPath ([System.Guid]::NewGuid().ToString())
+            New-Item -Path $tempDestinationPath -ItemType Directory | Out-Null
             $duration = Measure-Command {
-                # Keep track of how long it takes to unzip, and a count of how many we unzip
-                Expand-Archive -Path $archive.FullName -DestinationPath $destinationPath -Force
+                # Extract to a temporary folder first
+                Expand-Archive -Path $archive.FullName -DestinationPath $tempDestinationPath -Force
+                # Move the extracted content to the final destination
+                Move-Item -Path $tempDestinationPath\* -Destination $destinationPath -Force
+                # Remove .zip from the folder name if present
+                $finalDestinationPath = $destinationPath -replace '\.zip$', ''
+                if ($finalDestinationPath -ne $destinationPath) {
+                    Rename-Item -Path $destinationPath -NewName $finalDestinationPath
+                }
                 $totalArchiveCount++
             }
+            Remove-Item -Path $tempDestinationPath -Recurse -Force
             
             # Write the result
             Write-Output "Extracting [`"$safeFileName`"] to [`"$destinationPath`"] took [$($duration.TotalSeconds)] seconds."
@@ -83,7 +91,6 @@ function Expand-ArchiveFiles {
                 Remove-Item -Path $archive.FullName -Force
                 Write-Output "Deleted [`"$safeFileName`"] from [`"$SourceDirectory`"]"
             }
-
         }
     } catch {
         Write-Error "Failed to complete with the following exception: [$($_.Exception.Message)]"
@@ -96,4 +103,5 @@ function Expand-ArchiveFiles {
         }
     }
 }
+
 Expand-ArchiveFiles -SourceDirectory "C:\Users\dean\Downloads\Packs" -TargetDirectory "\\CLEARBOOK\Games\ITGMania 0.8.0\Songs"
