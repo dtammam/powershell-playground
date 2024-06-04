@@ -48,12 +48,18 @@ function Expand-ArchiveFiles {
         try {
             Test-Path -Path $TargetDirectory -ErrorAction Stop | Out-Null
         } catch {
-            Write-Output "Cannot access TargetDirectory: $TargetDirectory"
+            Write-Output "Cannot access target directory [$TargetDirectory]"
             return
         }
 
         # Find all archive files in the SourceDirectory
         $archives = Get-ChildItem -Path $SourceDirectory -Filter *.zip
+
+        if ($null -eq $archives) {
+            Write-Output "No archives found in source directory [$sourceDirectory]."
+            [int]$totalArchiveCount = 0
+            return
+        }
 
         foreach ($archive in $archives) {
             # We are looking to extract to our predetermined location
@@ -66,22 +72,28 @@ function Expand-ArchiveFiles {
             $destinationPath = Join-Path -Path $TargetDirectory -ChildPath $safeFileName
         
             # Create a temporary directory and measure the time taken to extract the archive there
-            Write-Output "$archive.FullName"
+            Write-Output "[$archive.FullName]"
             $tempDestinationPath = Join-Path -Path $env:TEMP -ChildPath ([System.Guid]::NewGuid().ToString())
             New-Item -Path $tempDestinationPath -ItemType Directory | Out-Null
             $duration = Measure-Command {
                 # Extract to a temporary folder first
                 Expand-Archive -Path $archive.FullName -DestinationPath $tempDestinationPath -Force
-                # Move the extracted content to the final destination
+                # Output message before moving the items
+                Write-Output "Moving extracted items from temporary directory to final destination [$destinationPath]"
+                # Move the extracted content to the final destination with verbosity
                 Move-Item -Path $tempDestinationPath\* -Destination $destinationPath -Force
+            
+                # Rename the final destination path to remove.zip from the end of the file name
                 # Remove .zip from the folder name if present
                 $finalDestinationPath = $destinationPath -replace '\.zip$', ''
                 if ($finalDestinationPath -ne $destinationPath) {
                     Rename-Item -Path $destinationPath -NewName $finalDestinationPath
                 }
-                $totalArchiveCount++
+                [int]$totalArchiveCount++
             }
             Remove-Item -Path $tempDestinationPath -Recurse -Force
+            # Output message after moving the items
+            Write-Output "Completed moving items to [$destinationPath]"
             
             # Write the result
             Write-Output "Extracting [`"$safeFileName`"] to [`"$destinationPath`"] took [$($duration.TotalSeconds)] seconds."
@@ -97,11 +109,11 @@ function Expand-ArchiveFiles {
     } finally {
         # Output how many we handled
         if ($totalArchiveCount -eq 1) {
-            Write-Output "Completed the process for [$($totalArchiveCount)] .zip file."
+            Write-Output "Completed the process for [$($totalArchiveCount)] archive file."
         } else {
-            Write-Output "Completed the process for [$($totalArchiveCount)] .zip files."
+            Write-Output "Completed the process for [$($totalArchiveCount)] archive files."
         }
     }
 }
 
-Expand-ArchiveFiles -SourceDirectory "C:\Users\dean\Downloads\Packs" -TargetDirectory "\\CLEARBOOK\Games\ITGMania 0.8.0\Songs"
+Expand-ArchiveFiles -SourceDirectory "C:\Users\dean\Downloads\Packs to Process" -TargetDirectory "\\CLEARBOOK\Games\ITGMania 0.8.0\Songs"
