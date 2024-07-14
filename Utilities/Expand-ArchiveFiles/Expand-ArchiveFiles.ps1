@@ -81,9 +81,28 @@ function Expand-ArchiveFiles {
                 # Output message before moving the items
                 Write-Output "Moving extracted items from temporary directory to final destination [$destinationPath]"
                 # Move the extracted content to the final destination with verbosity
-                Move-Item -Path $tempDestinationPath\* -Destination $destinationPath -Force
-            
-                # Rename the final destination path to remove.zip from the end of the file name
+                
+
+                # Get the list of files to move
+                $filesToMove = Get-ChildItem -Path $tempDestinationPath
+
+                $totalFiles = $filesToMove.Count
+                $currentFile = 0
+
+                foreach ($file in $filesToMove) {
+                    $currentFile++
+                    $percentComplete = ($currentFile / $totalFiles) * 100
+
+                    # Display progress
+                    Write-Progress -Activity "Moving files" -Status "Moving $($file.Name)" -PercentComplete $percentComplete
+
+                    # Move the file
+                    Move-Item -Path $file.FullName -Destination $destinationPath -Force
+                }
+
+                # Clear the progress bar
+                Write-Progress -Activity "Moving files" -Completed
+
                 # Remove .zip from the folder name if present
                 $finalDestinationPath = $destinationPath -replace '\.zip$', ''
                 if ($finalDestinationPath -ne $destinationPath) {
@@ -116,4 +135,9 @@ function Expand-ArchiveFiles {
     }
 }
 
-Expand-ArchiveFiles -SourceDirectory "C:\Users\dean\Downloads\Packs to Process" -TargetDirectory "\\CLEARBOOK\Games\ITGMania 0.8.0\Songs"
+$expandArchiveSplat = @{
+    SourceDirectory = "C:\Users\dean\Downloads\Packs to Process"
+    TargetDirectory = "\\CLEARBOOK\Games\ITGMania\Songs"
+}
+
+Expand-ArchiveFiles @expandArchiveSplat
